@@ -3,9 +3,10 @@ public class Main {
         Drone tello = new Drone("192.168.0.52");
 
         tello.connect();
-        tello.sendCommand("takeoff");
+        tello.takeOff();
         square(tello);
-        tello.sendCommand("land");
+        circle(tello);
+        tello.land();
     }
 
     public static void square(Drone drone) {
@@ -13,5 +14,10 @@ public class Main {
             drone.move(MoveDirection.FORWARD, 100);
             drone.rotate(RotateDirection.CLOCKWISE, 90);
         }
+    }
+
+    public static void circle(Drone drone) {
+        drone.curve(50, 50, 0, 100, 0, 0, 20);
+        drone.curve(-50, -50, 0, -100, 0, 0, 20);
     }
 }

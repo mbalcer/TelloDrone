@@ -74,6 +74,16 @@ public class Drone {
         return new String(packet.getData());
     }
 
+    public void takeOff() {
+        sendCommand("takeoff");
+        System.out.println("Drone is taking off");
+    }
+
+    public void land() {
+        sendCommand("land");
+        System.out.println("Drone is landing");
+    }
+
     public boolean move(MoveDirection direction, int cm) {
         if (cm >= 20 && cm <= 500) {
             sendCommand(direction.getCommand() + " " + cm);
@@ -96,4 +106,20 @@ public class Drone {
         }
     }
 
+    public boolean curve(int x1, int y1, int z1, int x2, int y2, int z2, int speed) {
+        if (validateCurveCoordinate(x1) && validateCurveCoordinate(y1) && validateCurveCoordinate(z1) &&
+            validateCurveCoordinate(x2) && validateCurveCoordinate(y2) && validateCurveCoordinate(z2) &&
+            speed >= 10 && speed <= 60) {
+            sendCommand(String.format("curve %d %d %d %d %d %d %d", x1, y1, z1, x2, y2, z2, speed));
+            System.out.println("Drone performed curve command");
+            return true;
+        } else {
+            System.out.println("Curve command failed");
+            return false;
+        }
+    }
+
+    private boolean validateCurveCoordinate(int coordinate) {
+        return coordinate >= 20 && coordinate <= 500;
+    }
 }
