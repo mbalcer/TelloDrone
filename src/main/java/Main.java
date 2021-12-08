@@ -4,9 +4,14 @@ public class Main {
 
         tello.connect();
         tello.sendCommand("takeoff");
-        tello.sendCommand("forward 100");
-        tello.sendCommand("cw 90");
-        tello.sendCommand("forward 100");
+        square(tello);
         tello.sendCommand("land");
+    }
+
+    public static void square(Drone drone) {
+        for (int i = 0; i < 4; i++) {
+            drone.move("forward", 100);
+            drone.rotate("cw", 90);
+        }
     }
 }

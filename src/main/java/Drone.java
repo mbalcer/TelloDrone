@@ -74,4 +74,26 @@ public class Drone {
         return new String(packet.getData());
     }
 
+    public boolean move(String direction, int cm) {
+        if (cm >= 20 && cm <= 500) {
+            sendCommand(direction + " " + cm);
+            System.out.println("Drone moved " + direction + ": " + cm + "cm. ");
+            return true;
+        } else {
+            System.out.println(direction + " command failed (only cm between 20 and 500 allowed)");
+            return false;
+        }
+    }
+
+    public boolean rotate(String direction, int degrees) {
+        if (degrees >= 1 && degrees <= 360) {
+            sendCommand(direction + " " + degrees);
+            System.out.println("Drone turned " + degrees + " degrees clockwise");
+            return true;
+        } else {
+            System.out.println("Rotation clockwise command failed");
+            return false;
+        }
+    }
+
 }
