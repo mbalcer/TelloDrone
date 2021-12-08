@@ -74,9 +74,9 @@ public class Drone {
         return new String(packet.getData());
     }
 
-    public boolean move(String direction, int cm) {
+    public boolean move(MoveDirection direction, int cm) {
         if (cm >= 20 && cm <= 500) {
-            sendCommand(direction + " " + cm);
+            sendCommand(direction.getCommand() + " " + cm);
             System.out.println("Drone moved " + direction + ": " + cm + "cm. ");
             return true;
         } else {
@@ -85,9 +85,9 @@ public class Drone {
         }
     }
 
-    public boolean rotate(String direction, int degrees) {
+    public boolean rotate(RotateDirection direction, int degrees) {
         if (degrees >= 1 && degrees <= 360) {
-            sendCommand(direction + " " + degrees);
+            sendCommand(direction.getCommand() + " " + degrees);
             System.out.println("Drone turned " + degrees + " degrees clockwise");
             return true;
         } else {

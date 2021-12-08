@@ -10,8 +10,8 @@ public class Main {
 
     public static void square(Drone drone) {
         for (int i = 0; i < 4; i++) {
-            drone.move("forward", 100);
-            drone.rotate("cw", 90);
+            drone.move(MoveDirection.FORWARD, 100);
+            drone.rotate(RotateDirection.CLOCKWISE, 90);
         }
     }
 }
