@@ -5,7 +5,7 @@ import java.net.InetAddress;
 
 public class Drone {
     private final int udpPort = 8889;
-    private String ip;
+    private final String ip;
     private DatagramSocket socket;
     private InetAddress IPAddress;
     private boolean isConnected = false;
@@ -14,7 +14,7 @@ public class Drone {
         this.ip = ip;
     }
 
-    public boolean is_ok() {
+    public boolean isOk() {
         String receiveMessage = receiveMessage();
         System.out.println("Receive message: " + receiveMessage);
         return receiveMessage.contains("ok");
@@ -122,4 +122,20 @@ public class Drone {
     private boolean validateCurveCoordinate(int coordinate) {
         return coordinate >= 20 && coordinate <= 500;
     }
+
+    public void makeSquareFigure(int sideLength) {
+        for (int i = 0; i < 4; i++) {
+            move(MoveDirection.FORWARD, sideLength);
+            rotate(RotateDirection.CLOCKWISE, 90);
+        }
+        System.out.println("Square figure was done");
+    }
+
+    public void makeCircleFigure(int radius) {
+        curve(radius, radius, 0, radius * 2, 0, 0, 20);
+        curve(-radius, -radius, 0, -(radius * 2), 0, 0, 20);
+
+        System.out.println("Circle figure was done");
+    }
+
 }
