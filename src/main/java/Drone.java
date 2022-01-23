@@ -8,30 +8,33 @@ public class Drone {
     private final String ip;
     private DatagramSocket socket;
     private InetAddress IPAddress;
-    private boolean isConnected = false;
 
     public Drone(String ip) {
         this.ip = ip;
     }
 
+    private void log(String message) {
+        System.out.println("Drone: " + ip + ". " + message);
+    }
+
     public boolean isOk() {
         String receiveMessage = receiveMessage();
-        System.out.println("Receive message: " + receiveMessage);
+        log("Receive message: " + receiveMessage);
         return receiveMessage.contains("ok");
     }
 
     public boolean connect() {
         try {
-            System.out.println("Connecting to drone");
+            log("Connecting to drone");
             IPAddress = InetAddress.getByName(ip);
             socket = new DatagramSocket();
             socket.connect(IPAddress, udpPort);
             sendMessage("command");
             if (isOk()) {
-                System.out.println("Successfully connected to the drone");
+                log("Successfully connected to the drone");
                 return true;
             } else {
-                System.out.println("Cannot connect to the drone");
+                log("Cannot connect to the drone");
                 return false;
             }
         } catch (Exception e) {
@@ -40,16 +43,16 @@ public class Drone {
     }
 
     public void sendCommand(String command) {
-        System.out.println("Command: " + command);
+        log("Command: " + command);
         sendMessage(command);
         try {
             Thread.sleep(5000);
-            System.out.println("Waiting 5 sec...");
+            log("Waiting 5 sec...");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Received message: " + receiveMessage());
-        System.out.println(command + " complete");
+        log("isOk?: " + isOk());
+        log(command + " complete");
     }
 
     private boolean sendMessage(String command) {
@@ -77,21 +80,21 @@ public class Drone {
 
     public void takeOff() {
         sendCommand("takeoff");
-        System.out.println("Drone is taking off");
+        log("Drone is taking off");
     }
 
     public void land() {
         sendCommand("land");
-        System.out.println("Drone is landing");
+        log("Drone is landing");
     }
 
     public boolean move(MoveDirection direction, int cm) {
         if (cm >= 20 && cm <= 500) {
             sendCommand(direction.getCommand() + " " + cm);
-            System.out.println("Drone moved " + direction + ": " + cm + "cm. ");
+            log("Drone moved " + direction + ": " + cm + "cm. ");
             return true;
         } else {
-            System.out.println(direction + " command failed (only cm between 20 and 500 allowed)");
+            log(direction + " command failed (only cm between 20 and 500 allowed)");
             return false;
         }
     }
@@ -99,10 +102,10 @@ public class Drone {
     public boolean rotate(RotateDirection direction, int degrees) {
         if (degrees >= 1 && degrees <= 360) {
             sendCommand(direction.getCommand() + " " + degrees);
-            System.out.println("Drone turned " + degrees + " degrees clockwise");
+            log("Drone turned " + degrees + " degrees clockwise");
             return true;
         } else {
-            System.out.println("Rotation clockwise command failed");
+            log("Rotation clockwise command failed");
             return false;
         }
     }
@@ -112,10 +115,10 @@ public class Drone {
             validateCurveCoordinate(x2) && validateCurveCoordinate(y2) && validateCurveCoordinate(z2) &&
             speed >= 10 && speed <= 60) {
             sendCommand(String.format("curve %d %d %d %d %d %d %d", x1, y1, z1, x2, y2, z2, speed));
-            System.out.println("Drone performed curve command");
+            log("Drone performed curve command");
             return true;
         } else {
-            System.out.println("Curve command failed");
+            log("Curve command failed");
             return false;
         }
     }
@@ -129,7 +132,7 @@ public class Drone {
             move(MoveDirection.FORWARD, sideLength);
             rotate(RotateDirection.CLOCKWISE, 90);
         }
-        System.out.println("Square figure was done");
+        log("Square figure was done");
     }
 
     public void makeCircleFigure(int radius) {
@@ -137,8 +140,6 @@ public class Drone {
             curve(radius, radius, 0, radius * 2, 0, 0, 30);
             rotate(RotateDirection.CLOCKWISE, 180);
         }
-
-        System.out.println("Circle figure was done");
+        log("Circle figure was done");
     }
-
 }
