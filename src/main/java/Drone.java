@@ -24,9 +24,10 @@ public class Drone {
         try {
             System.out.println("Connecting to drone");
             IPAddress = InetAddress.getByName(ip);
-            socket = new DatagramSocket(udpPort);
-            isConnected = sendMessage("command");
-            if (isConnected) {
+            socket = new DatagramSocket();
+            socket.connect(IPAddress, udpPort);
+            sendMessage("command");
+            if (isOk()) {
                 System.out.println("Successfully connected to the drone");
                 return true;
             } else {
@@ -120,7 +121,7 @@ public class Drone {
     }
 
     private boolean validateCurveCoordinate(int coordinate) {
-        return coordinate >= 20 && coordinate <= 500;
+        return coordinate >= 0 && coordinate <= 500;
     }
 
     public void makeSquareFigure(int sideLength) {
@@ -132,8 +133,10 @@ public class Drone {
     }
 
     public void makeCircleFigure(int radius) {
-        curve(radius, radius, 0, radius * 2, 0, 0, 20);
-        curve(-radius, -radius, 0, -(radius * 2), 0, 0, 20);
+        for (int i = 0; i < 2; i++) {
+            curve(radius, radius, 0, radius * 2, 0, 0, 30);
+            rotate(RotateDirection.CLOCKWISE, 180);
+        }
 
         System.out.println("Circle figure was done");
     }
