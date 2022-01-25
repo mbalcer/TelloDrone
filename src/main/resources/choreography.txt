@@ -1,0 +1,10 @@
+up 50
+forward 100
+right 100
+ccw 90
+forward 100
+ccw 90
+down 25
+forward 100
+up 50
+cw 180
